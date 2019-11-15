@@ -13,6 +13,7 @@ def model_A_orig():
     model = clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     y_prob = clf.predict_proba(X_test)
+    np.savetxt("saved_results/random_forest_classifier.csv", y_prob, delimiter=",")
     calculate_metrics(y_pred, y_test)
 
 def model_A_adapted(confidence_threshold=.75):
@@ -24,6 +25,7 @@ def model_A_adapted(confidence_threshold=.75):
     clf = RandomForestClassifier(n_estimators=100, max_depth=3,random_state=0)
     model = clf.fit(X_train, y_train)
     y_prob = clf.predict_proba(X_test)
+
     y_pred = get_adapted_predictions(y_prob, confidence_threshold)
     calculate_metrics(y_pred, y_test)
 
@@ -90,6 +92,7 @@ def get_model_B():
         optimizer.step()
 
     y_probs = model.predict(torch.from_numpy(X_test).type(torch.FloatTensor))
+    np.savetxt("saved_results/basic_nn_probs.csv", y_probs, delimiter=",")
     y_preds = get_predictions(y_probs)
     calculate_metrics(y_preds, y_test)
 
@@ -104,7 +107,7 @@ def get_model_B():
 
 def main():
     # print('hello')
-    # model_A_orig(); #Random Forest untouched
+    model_A_orig(); #Random Forest untouched
     # model_A_adapted(.60); # Random Forest iwth threshold
     get_model_B()
 
