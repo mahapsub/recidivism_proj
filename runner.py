@@ -1,4 +1,8 @@
 from pipeline import *
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from model_B_helper import *
 
 def model_A_orig():
     print('\n\n\n')
@@ -23,6 +27,74 @@ def model_A_adapted(confidence_threshold=.75):
     y_pred = get_adapted_predictions(y_prob, confidence_threshold)
     calculate_metrics(y_pred, y_test)
 
+def get_model_B_adapted(confidence_threshold=.75):
+    print('NN Adapted')
+    print('Confidence Threshold: {}'.format(confidence_threshold))
+    X_train, X_test, y_train, y_test = pipeline.get_data()
+    X = torch.from_numpy(X_train).type(torch.FloatTensor)
+    y = torch.from_numpy(y_train).type(torch.LongTensor)
+
+    model = MyClassifier()
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    #Number of epochs
+    epochs = 10000
+    #List to store losses
+    losses = []
+    for i in range(epochs):
+        #Precit the output for Given input
+        y_pred = model.forward(X)
+        #Compute Cross entropy loss
+        loss = criterion(y_pred,y)
+        #Add loss to the list
+        losses.append(loss.item())
+        # print(loss.item())
+        #Clear the previous gradients
+        optimizer.zero_grad()
+        #Compute gradients
+        loss.backward()
+        #Adjust weights
+        optimizer.step()
+
+    y_probs = model.predict(torch.from_numpy(X_test).type(torch.FloatTensor))
+    y_preds = get_adapted_predictions(y_probs, confidence_threshold)
+    calculate_metrics(y_preds, y_test)
+
+def get_model_B():
+    print('NN')
+    print('Confidence Threshold: {}'.format(0))
+    X_train, X_test, y_train, y_test = pipeline.get_data()
+    X = torch.from_numpy(X_train).type(torch.FloatTensor)
+    y = torch.from_numpy(y_train).type(torch.LongTensor)
+
+    model = MyClassifier()
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    #Number of epochs
+    epochs = 10000
+    #List to store losses
+    losses = []
+    for i in range(epochs):
+        #Precit the output for Given input
+        y_pred = model.forward(X)
+        #Compute Cross entropy loss
+        loss = criterion(y_pred,y)
+        #Add loss to the list
+        losses.append(loss.item())
+        # print(loss.item())
+        #Clear the previous gradients
+        optimizer.zero_grad()
+        #Compute gradients
+        loss.backward()
+        #Adjust weights
+        optimizer.step()
+
+    y_probs = model.predict(torch.from_numpy(X_test).type(torch.FloatTensor))
+    y_preds = get_predictions(y_probs)
+    calculate_metrics(y_preds, y_test)
+
+
+
 
 
 
@@ -31,8 +103,10 @@ def model_A_adapted(confidence_threshold=.75):
 
 
 def main():
-    model_A_orig(); #Random Forest untouched
-    model_A_adapted(.60); # Random Forest iwth threshold
+    # print('hello')
+    # model_A_orig(); #Random Forest untouched
+    # model_A_adapted(.60); # Random Forest iwth threshold
+    get_model_B()
 
 
 

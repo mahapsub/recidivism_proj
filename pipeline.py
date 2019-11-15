@@ -9,6 +9,9 @@ def get_data(file_name="compass/propublica_data_for_fairml.csv"):
     X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.20, random_state=42)
     return X_train, X_test, y_train, y_test
 
+def get_predictions(y_prob):
+    return get_adapted_predictions(y_prob, 0)
+
 
 def get_adapted_predictions(y_prob, conf_thres):
     """
