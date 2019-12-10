@@ -1,0 +1,79 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.Panel {
+  margin-left: 0;
+  height: 100vh;
+}
+
+.slider_class {
+  margin-bottom:0!important;
+}
+
+.progress_bar{
+  margin-bottom: 40px;
+
+}
+
+.space{
+  margin:100px
+}
+
+.card_style{
+  margin: 0!important;
+}
+
+.col{
+  flex-basis: 0;
+  flex-grow: 0;
+  max-width: 100%;
+}
+.custom_col{
+  flex-grow: 1;
+}
+.label_1{
+  color:darkslateblue;
+  font-size:50px;
+}
+
+.label_2{
+  color:darkolivegreen;
+  font-size:30px;
+  border-bottom: 10px;
+}
+
+.border_st{
+  border-bottom: 10px;
+  border-bottom: blueviolet;
+}
+
+.progress-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  background-color: darkslateblue;
+  transition: width .6s ease;
+}

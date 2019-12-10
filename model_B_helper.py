@@ -11,9 +11,6 @@ class MyClassifier(nn.Module):
         self.fc1 = nn.Linear(11,5)
         self.fc2 = nn.Linear(5,4)
         self.fc3 = nn.Linear(4,3)
-
-
-
         #This applies linear transformation to produce output data
         self.fc4 = nn.Linear(3,2)
 
